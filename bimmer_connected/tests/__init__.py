@@ -37,7 +37,7 @@ REMOTE_SERVICE_RESPONSE_EVENTPOSITION = RESPONSE_DIR / "remote_services" / "eadr
 
 def get_fingerprint_count() -> int:
     """Return number of loaded vehicles."""
-    return sum([len(vehicles) for vehicles in ALL_VEHICLES.values()])
+    return sum(len(vehicles) for vehicles in ALL_VEHICLES.values())
 
 
 def load_response(path: Union[Path, str]) -> Any:

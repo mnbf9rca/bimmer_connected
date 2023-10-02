@@ -265,7 +265,7 @@ async def image(args) -> None:
     for viewdirection in VehicleViewDirection:
         if viewdirection == VehicleViewDirection.UNKNOWN:
             continue
-        filename = str(viewdirection.name).lower() + ".png"
+        filename = f"{str(viewdirection.name).lower()}.png"
         with open(filename, "wb") as output_file:
             image_data = await vehicle.get_vehicle_image(viewdirection)
             output_file.write(image_data)
@@ -300,7 +300,7 @@ async def send_poi_from_address(args) -> None:
     await account.get_vehicles()
     vehicle = get_vehicle_or_return(account, args.vin)
 
-    query = [(str(" ".join(args.address)))]
+    query = [" ".join(args.address)]
     try:
         async with httpx.AsyncClient() as client:
             response: httpx.Response = await client.get(

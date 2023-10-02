@@ -178,9 +178,7 @@ class MyBMWVehicle:
             ]
             if ts
         ]
-        if len(timestamps) == 0:
-            return None
-        return max(timestamps)
+        return None if not timestamps else max(timestamps)
 
     # # # # # # # # # # # # # # #
     # Capabilities & properties

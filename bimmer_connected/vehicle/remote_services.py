@@ -87,10 +87,7 @@ class RemoteServiceStatus:
 
     def __init__(self, response: dict, event_id: Optional[str] = None):
         """Construct a new object from a dict."""
-        status = None
-        if "eventStatus" in response:
-            status = response.get("eventStatus")
-
+        status = response.get("eventStatus", None)
         self.state = ExecutionState(status or "UNKNOWN")
         self.details = response
         self.event_id = event_id
@@ -269,7 +266,7 @@ class RemoteServices:
 
         target_charging_profile = self._vehicle.charging_profile.format_for_remote_service()
 
-        if charging_mode and not charging_mode == ChargingMode.UNKNOWN:
+        if charging_mode and charging_mode != ChargingMode.UNKNOWN:
             target_charging_profile["chargingMode"]["type"] = MAP_CHARGING_MODE_TO_REMOTE_SERVICE[charging_mode]
             target_charging_profile["chargingMode"]["chargingPreference"] = CHARGING_MODE_TO_CHARGING_PREFERENCE[
                 charging_mode

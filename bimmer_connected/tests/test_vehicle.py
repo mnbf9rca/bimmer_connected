@@ -254,7 +254,7 @@ def test_strenum(caplog):
     assert TestEnumUnkown("hello") == TestEnumUnkown.HELLO
     assert TestEnumUnkown("HELLO") == TestEnumUnkown.HELLO
 
-    assert len([r for r in caplog.records if r.levelname == "WARNING"]) == 0
+    assert not [r for r in caplog.records if r.levelname == "WARNING"]
     assert TestEnumUnkown("WORLD") == TestEnumUnkown.UNKNOWN
     assert len([r for r in caplog.records if r.levelname == "WARNING"]) == 1
 
