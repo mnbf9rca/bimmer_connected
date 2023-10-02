@@ -9,6 +9,7 @@ Author: sshuair
 License: MIT License
 """
 
+
 # -*- coding: utf-8 -*-
 from math import atan2, cos, fabs
 from math import pi as PI
@@ -18,7 +19,7 @@ from math import sin, sqrt
 a = 6378245.0
 f = 1 / 298.3
 b = a * (1 - f)
-ee = 1 - (b * b) / (a * a)
+ee = 1 - b * b / a**2
 
 
 def outOfChina(lng, lat):

@@ -81,9 +81,7 @@ class FuelAndBattery(VehicleDataBase):
     def from_vehicle_data(cls, vehicle_data: Dict):
         """Create the class based on vehicle data from API."""
         parsed = cls._parse_vehicle_data(vehicle_data) or {}
-        if len(parsed) > 0:
-            return cls(**parsed)
-        return None
+        return cls(**parsed) if len(parsed) > 0 else None
 
     @classmethod
     def _parse_vehicle_data(cls, vehicle_data: Dict) -> Optional[Dict]:
@@ -92,10 +90,10 @@ class FuelAndBattery(VehicleDataBase):
         drivetrain = DriveTrainType(vehicle_data.get(ATTR_ATTRIBUTES, {}).get("driveTrain") or DriveTrainType.UNKNOWN)
 
         # return early if state data hasn't been loaded or no combustion/electric data is available
-        if (
-            ATTR_STATE not in vehicle_data
-            or len({"combustionFuelLevel", "electricChargingState"}.intersection(set(vehicle_data[ATTR_STATE]))) == 0
-        ):
+        if ATTR_STATE not in vehicle_data or not {
+            "combustionFuelLevel",
+            "electricChargingState",
+        }.intersection(set(vehicle_data[ATTR_STATE])):
             return retval
 
         state = vehicle_data["state"]
@@ -104,8 +102,7 @@ class FuelAndBattery(VehicleDataBase):
             retval.update(cls._parse_fuel_data(state.get("combustionFuelLevel", {}), vehicle_data["is_metric"]))
 
         if drivetrain in HV_BATTERY_DRIVE_TRAINS:
-            electric_data = state.get("electricChargingState", {})
-            if electric_data:
+            if electric_data := state.get("electricChargingState", {}):
                 retval.update(
                     cls._parse_electric_data(
                         electric_data,

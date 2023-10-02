@@ -31,19 +31,22 @@ class VehicleLocation(VehicleDataBase):
     def from_vehicle_data(cls, vehicle_data: Dict):
         """Create the class based on vehicle data from API."""
         parsed = cls._parse_vehicle_data(vehicle_data) or {}
-        if len(parsed) > 1:  # must be greater than 1 due to timestamp dummy
-            return cls(**parsed)
-        return None
+        return cls(**parsed) if len(parsed) > 1 else None
 
     @classmethod
     def _parse_vehicle_data(cls, vehicle_data: Dict):
         date_dummy = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
 
-        retval: Dict[str, Any] = {}
-        retval["vehicle_update_timestamp"] = max(
-            parse_datetime(vehicle_data.get(ATTR_STATE, {}).get("lastFetched")) or date_dummy,
-            parse_datetime(vehicle_data.get(ATTR_ATTRIBUTES, {}).get("lastFetched")) or date_dummy,
-        )
+        retval: Dict[str, Any] = {
+            "vehicle_update_timestamp": max(
+                parse_datetime(vehicle_data.get(ATTR_STATE, {}).get("lastFetched"))
+                or date_dummy,
+                parse_datetime(
+                    vehicle_data.get(ATTR_ATTRIBUTES, {}).get("lastFetched")
+                )
+                or date_dummy,
+            )
+        }
         if ATTR_STATE in vehicle_data and "location" in vehicle_data[ATTR_STATE]:
             location = vehicle_data[ATTR_STATE]["location"]
             retval["location"] = GPSPosition(location["coordinates"]["latitude"], location["coordinates"]["longitude"])

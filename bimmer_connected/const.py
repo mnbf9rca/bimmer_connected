@@ -57,7 +57,7 @@ AUTH_CHINA_CAPTCHA_CHECK_URL = "/eadrax-coas/v1/cop/check-captcha"
 OAUTH_CONFIG_URL = "/eadrax-ucs/v1/presentation/oauth/config"
 
 VEHICLES_URL = "/eadrax-vcs/v4/vehicles"
-VEHICLE_STATE_URL = VEHICLES_URL + "/state"
+VEHICLE_STATE_URL = f"{VEHICLES_URL}/state"
 
 REMOTE_SERVICE_BASE_URL = "/eadrax-vrccs/v3/presentation/remote-commands"
 REMOTE_SERVICE_URL = REMOTE_SERVICE_BASE_URL + "/{vin}/{service_type}"
@@ -66,8 +66,12 @@ REMOTE_SERVICE_POSITION_URL = REMOTE_SERVICE_BASE_URL + "/eventPosition?eventId=
 
 VEHICLE_CHARGING_DETAILS_URL = "/eadrax-crccs/v2/vehicles"
 VEHICLE_CHARGING_BASE_URL = "/eadrax-crccs/v1/vehicles/{vin}"
-VEHICLE_CHARGING_SETTINGS_SET_URL = VEHICLE_CHARGING_BASE_URL + "/charging-settings"
-VEHICLE_CHARGING_PROFILE_SET_URL = VEHICLE_CHARGING_BASE_URL + "/charging-profile"
+VEHICLE_CHARGING_SETTINGS_SET_URL = (
+    f"{VEHICLE_CHARGING_BASE_URL}/charging-settings"
+)
+VEHICLE_CHARGING_PROFILE_SET_URL = (
+    f"{VEHICLE_CHARGING_BASE_URL}/charging-profile"
+)
 VEHICLE_CHARGING_START_STOP_URL = VEHICLE_CHARGING_BASE_URL + "/{service_type}"
 
 VEHICLE_IMAGE_URL = "/eadrax-ics/v3/presentation/vehicles/{vin}/images?carView={view}"

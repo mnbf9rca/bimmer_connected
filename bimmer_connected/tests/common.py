@@ -227,11 +227,6 @@ class MyBMWMockRouter(respx.MockRouter):
             new_state = ChargingState.PLUGGED_IN if "stop" in service else ChargingState.CHARGING
             self.states[vin]["state"]["electricChargingState"]["chargingStatus"] = new_state
 
-        elif service in ["vehicle-finder"]:
-            # nothing to do here as this is handled by the
-            # return of REMOTE_SERVICE_RESPONSE_EVENTPOSITION
-            pass
-
         json_data = load_response(REMOTE_SERVICE_RESPONSE_INITIATED)
         json_data["eventId"] = str(uuid4())
 
@@ -310,6 +305,4 @@ class MyBMWMockRouter(respx.MockRouter):
                 len(data["location"]["name"]) > 0,
             ]
         )
-        if not tests:
-            return httpx.Response(400)
-        return httpx.Response(201)
+        return httpx.Response(400) if not tests else httpx.Response(201)

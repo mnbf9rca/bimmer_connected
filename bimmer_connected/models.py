@@ -35,9 +35,7 @@ class VehicleDataBase:
     def from_vehicle_data(cls, vehicle_data: Dict):
         """Create the class based on vehicle data from API."""
         parsed = cls._parse_vehicle_data(vehicle_data) or {}
-        if len(parsed) > 0:
-            return cls(**parsed)
-        return None
+        return cls(**parsed) if len(parsed) > 0 else None
 
     def update_from_vehicle_data(self, vehicle_data: Dict):
         """Update the attributes based on vehicle data from API."""
@@ -81,10 +79,11 @@ class GPSPosition:
     def __eq__(self, other):
         if isinstance(other, Tuple):
             return tuple(self.__iter__()) == other
-        if hasattr(self, "__dict__") and hasattr(other, "__dict__"):
-            return self.__dict__ == other.__dict__
-        if hasattr(self, "__dict__") and isinstance(other, Dict):
-            return self.__dict__ == other
+        if hasattr(self, "__dict__"):
+            if hasattr(other, "__dict__"):
+                return self.__dict__ == other.__dict__
+            if isinstance(other, Dict):
+                return self.__dict__ == other
         return False
 
 

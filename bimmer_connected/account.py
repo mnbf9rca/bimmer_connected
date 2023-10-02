@@ -139,10 +139,7 @@ class MyBMWAccount:
     ) -> None:
         """Add or update a vehicle from the API responses."""
 
-        existing_vehicle = self.get_vehicle(vehicle_base["vin"])
-
-        # If vehicle already exists, just update it's state
-        if existing_vehicle:
+        if existing_vehicle := self.get_vehicle(vehicle_base["vin"]):
             existing_vehicle.update_state(vehicle_base, vehicle_state, charging_settings, fetched_at)
         else:
             self.vehicles.append(MyBMWVehicle(self, vehicle_base, vehicle_state, charging_settings, fetched_at))
@@ -154,10 +151,9 @@ class MyBMWAccount:
         :param vin: VIN of the vehicle you want to get.
         :return: Returns None if no vehicle is found.
         """
-        for car in self.vehicles:
-            if car.vin.upper() == vin.upper():
-                return car
-        return None
+        return next(
+            (car for car in self.vehicles if car.vin.upper() == vin.upper()), None
+        )
 
     def set_observer_position(self, latitude: float, longitude: float) -> None:
         """Set the position of the observer for all vehicles."""
